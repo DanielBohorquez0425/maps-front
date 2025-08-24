@@ -1,4 +1,5 @@
 import { IconLogout } from "../../../assets/icons/icons";
+import { logout } from "../../../services/axios";
 
 export default function UserProfile({
   userName = "Usuario",
@@ -70,7 +71,7 @@ export default function UserProfile({
       {/* Logout button */}
       {showLogout && (
         <button
-          onClick={onLogout}
+          onClick={logout}
           className="p-2 hover:bg-white/5 rounded-lg transition-colors group"
           title="Cerrar sesión"
         >
