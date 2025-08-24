@@ -1,11 +1,13 @@
 ---
+import AuthGuard from '../components/React/AuthGuard';
+import MapContainer from '../components/React/MapContainer';
 import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout>
-	<div class="flex flex-col gap-4">
-		<p>Hola esta es la página principal ¿Qué quieres hacer?</p>
-		<a href="/register">Ir a la página de registro</a>
-		<a href="/login">Ir a la página de login</a>
-	</div>
+	<AuthGuard client:load fallback="login">
+        <div class="p-10">
+            <MapContainer client:load />
+        </div>
+    </AuthGuard>
 </Layout>
