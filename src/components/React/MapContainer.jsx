@@ -1,4 +1,3 @@
-// MapContainer.jsx
 import { useState, useCallback } from "react";
 import Map from "./Map";
 import PlaceInfoSidebar from "./PlaceInfoSidebar";
@@ -14,7 +13,7 @@ export default function MapContainer({
 
   const handlePlaceSelect = useCallback((newPlace) => {
     setPlaceInformation(newPlace);
-    
+
     setSearchHistory((prev) => {
       const existsIndex = prev.findIndex(
         (p) =>

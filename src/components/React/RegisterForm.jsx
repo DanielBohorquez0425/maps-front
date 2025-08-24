@@ -18,7 +18,6 @@ export default function Register() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Validaciones individuales
   const validateName = (name) => {
     if (!name.trim()) {
       return "El nombre es requerido";
@@ -85,7 +84,6 @@ export default function Register() {
     return "";
   };
 
-  // Validar formulario completo
   const validateForm = () => {
     const newErrors = {};
     
@@ -105,7 +103,6 @@ export default function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Validar campo individual
   const validateField = (fieldName, value) => {
     let error = "";
     
@@ -121,7 +118,6 @@ export default function Register() {
         break;
       case "password":
         error = validatePassword(value);
-        // También revalidar confirmPassword si existe
         if (confirmPassword) {
           const confirmError = validateConfirmPassword(confirmPassword, value);
           setErrors(prev => ({
@@ -167,7 +163,6 @@ export default function Register() {
         type: "success",
       });
       
-      // Limpiar formulario
       setName("");
       setLastName("");
       setEmail("");
@@ -181,7 +176,6 @@ export default function Register() {
     } catch (err) {
       console.error("Error al registrar usuario", err);
       
-      // Manejar diferentes tipos de errores del backend
       let errorMessage = "Error al crear la cuenta";
       
       if (err.response?.data?.message) {
