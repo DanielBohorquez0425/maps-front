@@ -15,7 +15,6 @@ export default function LoginForm() {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Validación de email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!email) {
@@ -27,7 +26,6 @@ export default function LoginForm() {
     return "";
   };
 
-  // Validación de contraseña
   const validatePassword = (password) => {
     if (!password) {
       return "La contraseña es requerida";
@@ -38,7 +36,6 @@ export default function LoginForm() {
     return "";
   };
 
-  // Validar formulario completo
   const validateForm = () => {
     const newErrors = {};
     
@@ -52,7 +49,6 @@ export default function LoginForm() {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Validar campo individual
   const validateField = (fieldName, value) => {
     let error = "";
     
@@ -103,7 +99,6 @@ export default function LoginForm() {
     } catch (err) {
       console.error("Login error:", err);
       
-      // Manejar diferentes tipos de errores del backend
       let errorMessage = "Error al iniciar sesión";
       
       if (err.response?.data?.message) {

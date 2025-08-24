@@ -45,9 +45,11 @@ const PlaceHeader = ({ name, rating, totalReviews, isOpen, types }) => (
 );
 
 const PlaceImage = ({ photos, name, onImageClick, className = "" }) => (
-  <div className={`max-w-[100px] max-h-[100px] w-[100px] h-[100px] min-w-[100px] min-h-[100px] flex items-center ${className}`}>
-    <button 
-      className="cursor-pointer hover:opacity-80 transition-opacity rounded-xl overflow-hidden" 
+  <div
+    className={`max-w-[100px] max-h-[100px] w-[100px] h-[100px] min-w-[100px] min-h-[100px] flex items-center ${className}`}
+  >
+    <button
+      className="cursor-pointer hover:opacity-80 transition-opacity rounded-xl overflow-hidden"
       onClick={onImageClick}
     >
       <img
@@ -66,7 +68,7 @@ const ContactInfo = ({ phone, address, website }) => (
     {phone && (
       <div className="flex items-center gap-2">
         <IconPhone />
-        <a 
+        <a
           href={`tel:${phone}`}
           className="text-[14px] text-gray-300 hover:text-white transition-colors"
         >
@@ -100,7 +102,7 @@ const ContactInfo = ({ phone, address, website }) => (
 
 const ScheduleSection = ({ schedule }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   if (!schedule || schedule.length === 0) return null;
 
   return (
@@ -132,10 +134,7 @@ const ScheduleSection = ({ schedule }) => {
           >
             <div className="pl-6 space-y-1">
               {schedule.map((day, index) => (
-                <p
-                  key={index}
-                  className="text-[14px] text-gray-300"
-                >
+                <p key={index} className="text-[14px] text-gray-300">
                   {day}
                 </p>
               ))}
@@ -160,12 +159,14 @@ const ReviewsSection = ({ reviews }) => {
   );
 };
 
-const Divider = () => <div className="border-t border-[#585870] h-[1px] my-3" />;
+const Divider = () => (
+  <div className="border-t border-[#585870] h-[1px] my-3" />
+);
 
-export default function PlaceDetails({ 
-  placeInformation, 
+export default function PlaceDetails({
+  placeInformation,
   onImageClick,
-  className = ""
+  className = "",
 }) {
   if (!placeInformation) return null;
 
