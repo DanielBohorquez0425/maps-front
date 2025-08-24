@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../../services/axios";
 import { Toast, Toaster, createToaster } from "@ark-ui/react/toast";
+import { IconEmail, IconPassword, IconName } from "../../assets/icons/icons"; // Supongamos que existen estos iconos
 
 const toaster = createToaster({
   placement: "bottom-end",
@@ -24,7 +25,6 @@ export default function Register() {
         description: "Ahora puedes iniciar sesión",
         type: "success",
       });
-
       setTimeout(() => {
         window.location.href = "/login";
       }, 2000);
@@ -39,55 +39,120 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-10 w-[400px] mx-auto p-10 border-1 border-gray-200 rounded"
-      >
-        <h1 className="text-2xl font-bold text-center">Registrarse</h1>
-        <div className="flex flex-col gap-4">
-          <input
-            type="name"
-            placeholder="Nombre"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="border border-gray-200 p-2 rounded text-gray-400 placeholder:font-light"
-          />
-          <input
-            type="lastName"
-            placeholder="Apellido"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            className="border border-gray-200 p-2 rounded text-gray-400 placeholder:font-light"
-          />
-          <input
-            type="email"
-            placeholder="Correo"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="border border-gray-200 p-2 rounded text-gray-400 placeholder:font-light"
-          />
-          <input
-            type="password"
-            placeholder="Contraseña"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="border border-gray-200 p-2 rounded text-gray-400 placeholder:font-light"
-          />
+    <div className="w-full max-w-md mx-auto h-screen flex items-center justify-center">
+      <div className="bg-[#161720] p-8 rounded-2xl border border-[#3A3A46] shadow-2xl">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2">Registrarse</h1>
+          <p className="text-[#9A9AA5]">Crea una nueva cuenta</p>
         </div>
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded w-fit mx-auto cursor-pointer">
-          Registrar
-        </button>
-      </form>
-      {/* Toaster component */}
+        <form onSubmit={handleSubmit} className="space-y-6 w-[350px]">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
+              Nombre
+            </label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary w-5 h-5">
+                <IconName />
+              </div>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full pl-12 pr-4 py-3 bg-[#292935] border border-[#585870] rounded-lg focus:ring-2 focus:ring-focus focus:border-primary outline-none transition-all duration-200 text-[#9A9AA5] placeholder:text-[#9A9AA5]"
+                placeholder="Tu nombre"
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="lastName" className="block text-sm font-medium text-white mb-2">
+              Apellido
+            </label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary w-5 h-5">
+                <IconName />
+              </div>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+                className="w-full pl-12 pr-4 py-3 bg-[#292935] border border-[#585870] rounded-lg focus:ring-2 focus:ring-focus focus:border-primary outline-none transition-all duration-200 text-[#9A9AA5] placeholder:text-[#9A9AA5]"
+                placeholder="Tu apellido"
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
+              Email
+            </label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary w-5 h-5">
+                <IconEmail />
+              </div>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full pl-12 pr-4 py-3 bg-[#292935] border border-[#585870] rounded-lg focus:ring-2 focus:ring-focus focus:border-primary outline-none transition-all duration-200 text-[#9A9AA5] placeholder:text-[#9A9AA5]"
+                placeholder="tu@email.com"
+              />
+            </div>
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-sm font-medium text-white mb-2">
+              Contraseña
+            </label>
+            <div className="relative">
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary w-5 h-5">
+                <IconPassword />
+              </div>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                className="w-full pl-12 pr-12 py-3 bg-[#292935] border border-[#585870] rounded-lg focus:ring-2 focus:ring-focus focus:border-primary outline-none transition-all duration-200 text-[#9A9AA5] placeholder:text-[#9A9AA5]"
+                placeholder="••••••••"
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            className="w-full py-3 px-4 cursor-pointer bg-[#4C6FFF] disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            Registrarse
+          </button>
+        </form>
+        <div className="mt-8 pt-6 border-t border-separator text-center">
+          <p className="text-[#9A9AA5]">
+            ¿Ya tienes una cuenta?{' '}
+            <a
+              href="/login"
+              className="text-[#4C6FFF] cursor-pointer hover:text-link-hover font-medium transition-colors duration-200"
+            >
+              Iniciar sesión
+            </a>
+          </p>
+        </div>
+      </div>
       <Toaster toaster={toaster}>
         {(toast) => (
           <Toast.Root
             key={toast.id}
-            className="w-[300px] rounded-lg shadow-xl p-4"
+            className="w-[300px] rounded-lg shadow-xl p-4 bg-[#161720] border border-[#3A3A46]"
           >
-            <Toast.Title>{toast.title}</Toast.Title>
-            <Toast.Description>{toast.description}</Toast.Description>
+            <Toast.Title className="text-white">{toast.title}</Toast.Title>
+            <Toast.Description className="text-[#9A9AA5]">{toast.description}</Toast.Description>
           </Toast.Root>
         )}
       </Toaster>
