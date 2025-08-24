@@ -1,10 +1,13 @@
 ---
 import MapContainer from "../components/React/MapContainer.jsx";
+import AuthGuard from "../components/React/AuthGuard.jsx";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout>
-    <div class="p-10">
-        <MapContainer client:load />
-    </div>
+    <AuthGuard client:load fallback="login">
+        <div class="p-10">
+            <MapContainer client:load />
+        </div>
+    </AuthGuard>
 </Layout>
