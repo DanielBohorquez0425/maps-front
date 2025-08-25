@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || "https://maps-backend-fv42.onrender.com";
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -39,14 +39,12 @@ api.interceptors.response.use(
 // Register
 export const register = async (name, lastName, email, password) => {
   try {
-    console.log("📝 Intentando registro para:", email);
     const response = await api.post("/auth/register", {
       name,
       last_name: lastName,
       email,
       password,
     });
-    console.log("✅ Registro exitoso");
     api.defaults.withCredentials = true;
     return response.data;
   } catch (error) {
@@ -61,7 +59,6 @@ export const register = async (name, lastName, email, password) => {
 // Login
 export const login = async (email, password) => {
   try {
-    console.log("🔐 Intentando login para:", email);
     const response = await api.post("/auth/login", {
       email,
       password,
@@ -70,8 +67,6 @@ export const login = async (email, password) => {
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
     }
-
-    console.log("✅ Login exitoso");
     return response.data;
   } catch (error) {
     console.error("❌ Error en login:", error.response?.data || error.message);
