@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:4000";
+const API_BASE_URL = import.meta.env.PUBLIC_API_BASE_URL || "https://maps-backend-fv42.onrender.com";
 
 const api = axios.create({
   baseURL: API_BASE_URL,

@@ -81,29 +81,49 @@ export default function LoginForm() {
       return;
     }
 
-    const TEST_USER = {
-      email: "admin@test.com",
-      password: "654321",
-    };
-
-    if (email === TEST_USER.email && password === TEST_USER.password) {
-      localStorage.setItem("token", "MOCK_TOKEN");
-      toaster.create({
-        title: "¡Bienvenido!",
-        description: "Has ingresado con el usuario de prueba",
-        type: "success",
-      });
-      setTimeout(() => {
-        window.location.href = "/home";
-      }, 1500);
-      return;
-    }
-
     setIsLoading(true);
 
     try {
       const res = await login(email, password);
-      console.log(res);
+      console.log('Login response completa:', res);
+      console.log('Login response data:', res.data);
+      console.log('Login response structure:', Object.keys(res));
+
+      // Verificar diferentes estructuras de respuesta
+      let token = null;
+      let user = null;
+
+      // Caso 1: res.data.token (Axios)
+      if (res.data && res.data.token) {
+        token = res.data.token;
+        user = res.data.user;
+      }
+      // Caso 2: res.token (respuesta directa)
+      else if (res.token) {
+        token = res.token;
+        user = res.user;
+      }
+      // Caso 3: res es la data directamente
+      else if (typeof res === 'object' && res.hasOwnProperty('token')) {
+        token = res.token;
+        user = res.user;
+      }
+
+      console.log('Token extraído:', token);
+      console.log('Usuario extraído:', user);
+
+      if (token) {
+        localStorage.setItem('token', token);
+        
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        }
+        
+        console.log('Token guardado en localStorage:', token);
+      } else {
+        console.error('Estructura de respuesta inesperada:', res);
+        throw new Error('No se recibió el token del servidor');
+      }
 
       toaster.create({
         title: "¡Bienvenido!",
@@ -111,9 +131,12 @@ export default function LoginForm() {
         type: "success",
       });
 
+      // Redirección después de un breve delay para mostrar el toast
       setTimeout(() => {
-        window.location.href = "/home";
+        // Mejor usar window.location.replace para evitar que el usuario regrese con el botón atrás
+        window.location.replace("/home");
       }, 1500);
+
     } catch (err) {
       console.error("Login error:", err);
 
@@ -133,6 +156,8 @@ export default function LoginForm() {
           default:
             errorMessage = err.response.data.message;
         }
+      } else if (err.message) {
+        errorMessage = err.message;
       }
 
       toaster.create({

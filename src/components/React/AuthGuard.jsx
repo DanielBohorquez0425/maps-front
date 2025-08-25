@@ -11,24 +11,20 @@ const AuthGuard = ({ children, fallback }) => {
   }, []);
 
   const checkAuthentication = async () => {
-    
     try {
       const token = localStorage.getItem('token');
-      
+
       if (!token) {
         setIsAuthenticated(false);
         setIsLoading(false);
         return;
       }
 
-      if (token === "MOCK_TOKEN") {
-        setIsAuthenticated(true);
-        setIsLoading(false);
-        return;
-      }
+      const API_BASE_URL = 
+        import.meta.env.PUBLIC_API_BASE_URL ||
+        process.env.PUBLIC_API_BASE_URL ||
+        'http://localhost:4000';
 
-      const API_BASE_URL = 'http://localhost:4000';
-      
       const response = await fetch(`${API_BASE_URL}/auth/verify`, {
         method: 'GET',
         headers: {
@@ -44,19 +40,19 @@ const AuthGuard = ({ children, fallback }) => {
       } else {
         const errorData = await response.json().catch(() => null);
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
         setIsAuthenticated(false);
         setError(`Error ${response.status}: ${errorData?.message || 'Token inválido'}`);
       }
     } catch (error) {
-      console.error('Error verificando autenticación:', error);
-      
       if (error.name === 'TypeError' && error.message.includes('fetch')) {
         setError('No se puede conectar al servidor. Verifica que esté ejecutándose.');
       } else {
         setError(`Error de conexión: ${error.message}`);
       }
-      
+
       localStorage.removeItem('token');
+      localStorage.removeItem('user');
       setIsAuthenticated(false);
     } finally {
       setIsLoading(false);
@@ -75,45 +71,44 @@ const AuthGuard = ({ children, fallback }) => {
   }
 
   if (!isAuthenticated) {
-    if (children, fallback) {
-        if(typeof fallback === 'string') {
-            return <RedirectToLogin />;
-        }
-      return children;
-    }
-    
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0F0F1A]">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold text-white mb-4">Acceso Denegado</h2>
-          <p className="text-[#9A9AA5] mb-4">Necesitas iniciar sesión para acceder a esta página</p>
-          
-          {error && (
-            <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 mb-4">
-              <p className="text-red-400 text-sm">
-                <strong>Error:</strong> {error}
-              </p>
+    if (fallback === 'login') {
+      return <RedirectToLogin />;
+    } else if (fallback) {
+      return fallback;
+    } else {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-[#0F0F1A]">
+          <div className="text-center max-w-md">
+            <h2 className="text-2xl font-bold text-white mb-4">Acceso Denegado</h2>
+            <p className="text-[#9A9AA5] mb-4">Necesitas iniciar sesión para acceder a esta página</p>
+
+            {error && (
+              <div className="bg-red-900/20 border border-red-500 rounded-lg p-4 mb-4">
+                <p className="text-red-400 text-sm">
+                  <strong>Error:</strong> {error}
+                </p>
+              </div>
+            )}
+
+            <div className="space-y-3">
+              <a
+                href="/login"
+                className="inline-block px-6 py-3 bg-[#4C6FFF] text-white rounded-lg hover:bg-[#3A5AFF] transition-colors"
+              >
+                Ir al Login
+              </a>
+
+              <button
+                onClick={checkAuthentication}
+                className="block w-full px-6 py-2 border border-[#4C6FFF] text-[#4C6FFF] rounded-lg hover:bg-[#4C6FFF] hover:text-white transition-colors"
+              >
+                Reintentar Verificación
+              </button>
             </div>
-          )}
-          
-          <div className="space-y-3">
-            <a 
-              href="/login" 
-              className="inline-block px-6 py-3 bg-[#4C6FFF] text-white rounded-lg hover:bg-[#3A5AFF] transition-colors"
-            >
-              Ir al Login
-            </a>
-            
-            <button
-              onClick={checkAuthentication}
-              className="block w-full px-6 py-2 border border-[#4C6FFF] text-[#4C6FFF] rounded-lg hover:bg-[#4C6FFF] hover:text-white transition-colors"
-            >
-              Reintentar Verificación
-            </button>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   return children;
