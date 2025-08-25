@@ -47,6 +47,7 @@ export const register = async (name, lastName, email, password) => {
       password,
     });
     console.log("✅ Registro exitoso");
+    api.defaults.withCredentials = true;
     return response.data;
   } catch (error) {
     console.error(
@@ -65,7 +66,7 @@ export const login = async (email, password) => {
       email,
       password,
     });
-
+    api.defaults.withCredentials = true;
     if (response.data.token) {
       localStorage.setItem("token", response.data.token);
     }
